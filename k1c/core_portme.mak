@@ -21,7 +21,7 @@
 OUTFLAG= -o
 # Flag: CC
 #	Use this flag to define compiler to use
-CC = gcc
+CC = k1-cos-gcc
 # Flag: CFLAGS
 #	Use this flag to define compiler options. Note, you can add compiler options from the command line using XCFLAGS="other flags"
 PORT_CFLAGS = -O2
@@ -30,7 +30,7 @@ CFLAGS = $(PORT_CFLAGS) -I$(PORT_DIR) -I. -DFLAGS_STR=\"$(FLAGS_STR)\"
 #Flag: LFLAGS_END
 #	Define any libraries needed for linking or other flags that should come at the end of the link line (e.g. linker scripts).
 #	Note: On certain platforms, the default clock_gettime implementation is supported but requires linking of librt.
-LFLAGS_END += -lrt
+LFLAGS_END +=
 # Flag: PORT_SRCS
 # Port specific source files can be added here
 PORT_SRCS = $(PORT_DIR)/core_portme.c
@@ -51,7 +51,7 @@ PORT_SRCS = $(PORT_DIR)/core_portme.c
 
 #For native compilation and execution
 LOAD = echo Loading done
-RUN =
+RUN = k1-mppa --
 
 OEXT = .o
 EXE = .exe
@@ -61,11 +61,11 @@ EXE = .exe
 # In this case, you also need to define below how to create an object file, and how to link.
 ifdef SEPARATE_COMPILE
 
-LD		= gcc
-OBJOUT	= -o
-LFLAGS	=
-OFLAG		= -o
-COUT	= -c
+LD		= k1-cos-gcc
+OBJOUT 	= -o
+LFLAGS 	=
+OFLAG 	= -o
+COUT 	= -c
 # Flag: PORT_OBJS
 # Port specific object files can be added here
 PORT_OBJS = $(PORT_DIR)/core_portme$(OEXT)

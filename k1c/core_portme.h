@@ -39,7 +39,7 @@ Original Author: Shay Gal-on
   and implementation of functions thereof.
 */
 #ifndef USE_CLOCK
-#define USE_CLOCK 0
+#define USE_CLOCK 1
 #endif
 /* Configuration: HAS_STDIO
   Define to 1 if the platform has stdio.h.
@@ -97,7 +97,7 @@ typedef signed int ee_s32;
 typedef double ee_f32;
 typedef unsigned char ee_u8;
 typedef unsigned int ee_u32;
-typedef ee_u32 ee_ptr_int;
+typedef unsigned long ee_ptr_int;
 typedef size_t ee_size_t;
 /* align_mem:
   This macro is used to align an offset to point to a 32b value. It is used in the Matrix algorithm to initialize the input memory blocks.
