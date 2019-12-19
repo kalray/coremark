@@ -92,11 +92,19 @@ run1.log-PARAM=$(PARAM1) 7 1 2000
 run2.log-PARAM=$(PARAM2) 7 1 2000 
 run3.log-PARAM=$(PARAM3) 7 1 1200
 
+ifeq ($(PORT_DIR),k1c)
+run1.log run2.log run3.log: load
+	$(MAKE) port_prerun
+	$(subst __EXEC__,$(OUTFILE),$(subst __ARGS__,$($(@) - PARAM), $(RUN)))\
+		> $(OPATH)$@
+	$(MAKE) port_postrun
+else
 run1.log run2.log run3.log: load
 	$(MAKE) port_prerun
 	$(RUN) $(OUTFILE) $($(@)-PARAM) > $(OPATH)$@
 	$(MAKE) port_postrun
-	
+endif
+
 .PHONY: gen_pgo_data
 gen_pgo_data: run3.log
 

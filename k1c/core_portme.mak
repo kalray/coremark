@@ -28,7 +28,7 @@ CC = k1-cos-gcc
 endif
 # Flag: CFLAGS
 #	Use this flag to define compiler options. Note, you can add compiler options from the command line using XCFLAGS="other flags"
-PORT_CFLAGS = -O2
+PORT_CFLAGS = -O3
 ifeq ($(ENABLE_TRACE),1)
 PORT_TRACEFLAGS = -finstrument-functions
 else
@@ -60,7 +60,13 @@ PORT_SRCS = $(PORT_DIR)/core_portme.c $(PORT_DIR)/trace.c
 
 #For native compilation and execution
 LOAD = echo Loading done
-RUN = k1-mppa --
+
+ifeq ($(ENABLE_SIMULATOR),1)
+RUN = k1-mppa -- __EXEC__ __ARGS__
+else
+RUN = k1-jtag-runner --exec-file=Cluster0:__EXEC__ --timeout=600 \
+	--args=Cluster0:"__ARGS__"
+endif
 
 OEXT = .o
 EXE = .exe
