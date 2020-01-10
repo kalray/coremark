@@ -21,10 +21,19 @@
 OUTFLAG= -o
 # Flag: CC
 #	Use this flag to define compiler to use
+ifdef PORT_CC
+CC = $(PORT_CC)
+else
 CC = k1-cos-gcc
+endif
 # Flag: CFLAGS
 #	Use this flag to define compiler options. Note, you can add compiler options from the command line using XCFLAGS="other flags"
 PORT_CFLAGS = -O2
+ifeq ($(ENABLE_TRACE),1)
+PORT_TRACEFLAGS = -finstrument-functions
+else
+PORT_TRACEFLAGS =
+endif
 FLAGS_STR = "$(PORT_CFLAGS) $(XCFLAGS) $(XLFLAGS) $(LFLAGS_END)"
 CFLAGS = $(PORT_CFLAGS) -I$(PORT_DIR) -I. -DFLAGS_STR=\"$(FLAGS_STR)\"
 #Flag: LFLAGS_END
@@ -33,7 +42,7 @@ CFLAGS = $(PORT_CFLAGS) -I$(PORT_DIR) -I. -DFLAGS_STR=\"$(FLAGS_STR)\"
 LFLAGS_END +=
 # Flag: PORT_SRCS
 # Port specific source files can be added here
-PORT_SRCS = $(PORT_DIR)/core_portme.c
+PORT_SRCS = $(PORT_DIR)/core_portme.c $(PORT_DIR)/trace.c
 # Flag: LOAD
 #	Define this flag if you need to load to a target, as in a cross compile environment.
 
@@ -59,6 +68,7 @@ EXE = .exe
 # Flag: SEPARATE_COMPILE
 # Define if you need to separate compilation from link stage.
 # In this case, you also need to define below how to create an object file, and how to link.
+SEPARATE_COMPILE=1
 ifdef SEPARATE_COMPILE
 
 LD		= k1-cos-gcc
@@ -68,10 +78,13 @@ OFLAG 	= -o
 COUT 	= -c
 # Flag: PORT_OBJS
 # Port specific object files can be added here
-PORT_OBJS = $(PORT_DIR)/core_portme$(OEXT)
+PORT_OBJS = $(PORT_DIR)/core_portme$(OEXT) $(PORT_DIR)/trace.o
 PORT_CLEAN = *$(OEXT)
 
 $(OPATH)%$(OEXT) : %.c
+	$(CC) $(CFLAGS) $(XCFLAGS) $(PORT_TRACEFLAGS) $(COUT) $< $(OBJOUT) $@
+
+k1c/trace.o : k1c/trace.c
 	$(CC) $(CFLAGS) $(XCFLAGS) $(COUT) $< $(OBJOUT) $@
 
 endif
