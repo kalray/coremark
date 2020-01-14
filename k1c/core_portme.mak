@@ -79,7 +79,7 @@ COUT 	= -c
 # Flag: PORT_OBJS
 # Port specific object files can be added here
 PORT_OBJS = $(PORT_DIR)/core_portme$(OEXT) $(PORT_DIR)/trace.o
-PORT_CLEAN = *$(OEXT)
+PORT_CLEAN = *$(OEXT) $(PORT_DIR)/*$(OEXT)
 
 $(OPATH)%$(OEXT) : %.c
 	$(CC) $(CFLAGS) $(XCFLAGS) $(PORT_TRACEFLAGS) $(COUT) $< $(OBJOUT) $@

@@ -25,21 +25,6 @@ score:
 	@echo "See README.md for run and reporting rules." 
 	
 ifndef PORT_DIR
-# Ports for a couple of common self hosted platforms
-UNAME=$(shell if command -v uname 2> /dev/null; then uname ; fi)
-ifneq (,$(findstring CYGWIN,$(UNAME)))
-PORT_DIR=cygwin
-endif
-ifneq (,$(findstring Linux,$(UNAME)))
-MACHINE=$(shell uname -m)
-ifneq (,$(findstring 64,$(MACHINE)))
-PORT_DIR=linux64
-else
-PORT_DIR=linux
-endif
-endif
-endif
-ifndef PORT_DIR
 $(error PLEASE define PORT_DIR! (e.g. make PORT_DIR=simple)) 
 endif
 vpath %.c $(PORT_DIR)
