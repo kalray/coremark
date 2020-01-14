@@ -39,7 +39,12 @@ Original Author: Shay Gal-on
   and implementation of functions thereof.
 */
 #ifndef USE_CLOCK
-#define USE_CLOCK 1
+#define USE_CLOCK 0
+#endif
+
+// On Kalray platforms, count cycles
+#ifndef K1C_CYCLES
+#define K1C_CYCLES 1
 #endif
 /* Configuration: HAS_STDIO
   Define to 1 if the platform has stdio.h.

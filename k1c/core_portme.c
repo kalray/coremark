@@ -23,6 +23,8 @@ Original Author: Shay Gal-on
 #include <valgrind/callgrind.h>
 #endif
 
+#include "cycles.h"
+
 #if (MEM_METHOD==MEM_MALLOC)
 #include <malloc.h>
 /* Function: portable_malloc
@@ -77,13 +79,21 @@ void portable_free(void *p) {
   If there are issues with the return value overflowing, increase this value.
   */
 #if USE_CLOCK
-  #define NSECS_PER_SEC CLOCKS_PER_SEC
-  #define EE_TIMER_TICKER_RATE 1000
-  #define CORETIMETYPE clock_t
-  #define GETMYTIME(_t) (*_t=clock())
-  #define MYTIMEDIFF(fin,ini) ((fin)-(ini))
-  #define TIMER_RES_DIVIDER 1
-  #define SAMPLE_TIME_IMPLEMENTATION 1
+	#define NSECS_PER_SEC CLOCKS_PER_SEC
+	#define EE_TIMER_TICKER_RATE 1000
+	#define CORETIMETYPE clock_t
+	#define GETMYTIME(_t) (*_t=clock())
+	#define MYTIMEDIFF(fin,ini) ((fin)-(ini))
+	#define TIMER_RES_DIVIDER 1
+	#define SAMPLE_TIME_IMPLEMENTATION 1
+#elif defined(K1C_CYCLES)
+	#define NSECS_PER_SEC K1C_NSECS_PER_SEC
+	#define EE_TIMER_TICKER_RATE 1000
+	#define CORETIMETYPE cycle_t
+	#define GETMYTIME(_t) (*_t=get_cycle())
+	#define MYTIMEDIFF(fin,ini) ((fin)-(ini))
+	#define TIMER_RES_DIVIDER 1
+	#define SAMPLE_TIME_IMPLEMENTATION 1
 #elif defined(_MSC_VER)
   #define NSECS_PER_SEC 10000000
   #define EE_TIMER_TICKER_RATE 1000
@@ -122,7 +132,8 @@ static CORETIMETYPE start_time_val, stop_time_val;
   or zeroing some system parameters - e.g. setting the cpu clocks cycles to 0.
 */
 void start_time(void) {
-  GETMYTIME(&start_time_val );
+  cycle_count_config();
+	GETMYTIME(&start_time_val);
 #if CALLGRIND_RUN
   CALLGRIND_START_INSTRUMENTATION
 #endif
