@@ -95,7 +95,7 @@ run3.log-PARAM=$(PARAM3) 7 1 1200
 ifeq ($(PORT_DIR),k1c)
 run1.log run2.log run3.log: load
 	$(MAKE) port_prerun
-	$(subst __EXEC__,$(OUTFILE),$(subst __ARGS__,$($(@) - PARAM), $(RUN)))\
+	$(subst __EXEC__,$(OUTFILE),$(subst __ARGS__,$($(@)-PARAM), $(RUN)))\
 		> $(OPATH)$@
 	$(MAKE) port_postrun
 else
