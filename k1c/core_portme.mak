@@ -77,7 +77,12 @@ EXE = .exe
 SEPARATE_COMPILE=1
 ifdef SEPARATE_COMPILE
 
-LD		= k1-cos-gcc
+ifdef PORT_LD
+LD = $(PORT_LD)
+else
+LD = k1-cos-gcc
+endif
+
 OBJOUT 	= -o
 LFLAGS 	=
 OFLAG 	= -o
