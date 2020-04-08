@@ -92,7 +92,7 @@ run1.log-PARAM=$(PARAM1) 7 1 2000
 run2.log-PARAM=$(PARAM2) 7 1 2000 
 run3.log-PARAM=$(PARAM3) 7 1 1200
 
-ifeq ($(PORT_DIR),k1c)
+ifeq ($(PORT_DIR),kvx)
 run1.log run2.log run3.log: load
 	$(MAKE) port_prerun
 	$(subst __EXEC__,$(OUTFILE),$(subst __ARGS__,$($(@)-PARAM), $(RUN)))\

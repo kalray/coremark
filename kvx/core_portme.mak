@@ -24,7 +24,7 @@ OUTFLAG= -o
 ifdef PORT_CC
 CC = $(PORT_CC)
 else
-CC = k1-cos-gcc
+CC = kvx-cos-gcc
 endif
 # Flag: CFLAGS
 #	Use this flag to define compiler options. Note, you can add compiler options from the command line using XCFLAGS="other flags"
@@ -62,9 +62,9 @@ PORT_SRCS = $(PORT_DIR)/core_portme.c $(PORT_DIR)/trace.c
 LOAD = echo Loading done
 
 ifeq ($(ENABLE_SIMULATOR),1)
-RUN = k1-mppa -- __EXEC__ __ARGS__
+RUN = kvx-mppa -- __EXEC__ __ARGS__
 else
-RUN = k1-jtag-runner --exec-file=Cluster0:__EXEC__ --timeout=600 \
+RUN = kvx-jtag-runner --exec-file=Cluster0:__EXEC__ --timeout=600 \
 	--args=Cluster0:"__ARGS__"
 endif
 
@@ -80,7 +80,7 @@ ifdef SEPARATE_COMPILE
 ifdef PORT_LD
 LD = $(PORT_LD)
 else
-LD = k1-cos-gcc
+LD = kvx-cos-gcc
 endif
 
 OBJOUT 	= -o
@@ -95,7 +95,7 @@ PORT_CLEAN = *$(OEXT) $(PORT_DIR)/*$(OEXT)
 $(OPATH)%$(OEXT) : %.c
 	$(CC) $(CFLAGS) $(XCFLAGS) $(PORT_TRACEFLAGS) $(COUT) $< $(OBJOUT) $@
 
-k1c/trace.o : k1c/trace.c
+kvx/trace.o : kvx/trace.c
 	$(CC) $(CFLAGS) $(XCFLAGS) $(COUT) $< $(OBJOUT) $@
 
 endif
